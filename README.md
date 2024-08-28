@@ -37,3 +37,5 @@ degreeType (optional): The temperature scale (Celsius or Fahrenheit, default is 
 404 Not Found: If no weather data is available for the requested city.
 
 - Custom Test Attributes: The use of the BeforeAfterAttribute ensures that mocks are reset before and after each test, maintaining a clean test environment and preventing cross-test contamination.
+
+![alt text]([http://url/to/img.png](https://github.com/PalalaeStefan301/WeatherForecastingRestAPI/blob/master/Swagger.png))
