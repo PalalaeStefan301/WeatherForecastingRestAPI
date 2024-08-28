@@ -21,7 +21,7 @@ namespace BLL.Concrete
             this._logger = logger;
         }
 
-        public async Task<WeatherResponse?> GetWeatherByCoordsAsync(City city, DateTime date , EnumDegreeTypes degreeTypes, EnumTimezones enumTimezones)
+        public async Task<WeatherResponse?> GetWeatherByCoordsAsync(City city, DateTime date , EnumTemperatureTypes degreeTypes, EnumTimezones enumTimezones)
         {
             using (var httpClient = new HttpClient())
             {
@@ -31,11 +31,13 @@ namespace BLL.Concrete
                     
                     uriBuilder.Query += $"?latitude={city.Latitude}";
                     uriBuilder.Query += $"&longitude={city.Longitude}";
-                    uriBuilder.Query += $"&current=temperature_2m&hourly=temperature_2m&timezone={enumTimezones.ToString().Replace("_","/")}";
+                    uriBuilder.Query += $"&current=temperature_2m&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,rain,visibility&daily=uv_index_max";
+                    uriBuilder.Query += $"&timezone={enumTimezones.ToString().Replace("_","/")}";
                     uriBuilder.Query += $"&start_date={date.Year}-{date.ToString("MM")}-{date.ToString("dd")}&end_date={date.Year}-{date.ToString("MM")}-{date.AddDays(1).ToString("dd")}";
-                    if(degreeTypes != EnumDegreeTypes.Celsius)
+
+                    if (degreeTypes != EnumTemperatureTypes.Celsius)
                     {
-                        uriBuilder.Query += $"temperature_unit={degreeTypes}";
+                        uriBuilder.Query += $"&temperature_unit={degreeTypes.ToString().ToLower()}";
                     }
 
 
@@ -50,12 +52,17 @@ namespace BLL.Concrete
                                                                                                                            .Where(x => x.value.GetDateTime().Date == date.Date && x.value.GetDateTime().Hour == date.Hour)
                                                                                                                            .Select(x => x.index)
                                                                                                                            .FirstOrDefault();
+
                     return new WeatherResponse()
                     {
                         City = city,
                         CurrentTime = date,
                         Temperature = responseDict.RootElement.GetProperty("hourly").GetProperty("temperature_2m").EnumerateArray().ElementAt(indexOfHour).GetDouble(),
-                        Timezone = enumTimezones
+                        Timezone = enumTimezones,
+                        Humidity = (int)responseDict.RootElement.GetProperty("hourly").GetProperty("relative_humidity_2m").EnumerateArray().ElementAt(indexOfHour).GetDouble(),
+                        Precipitation = (int)responseDict.RootElement.GetProperty("hourly").GetProperty("precipitation_probability").EnumerateArray().ElementAt(indexOfHour).GetDouble(),
+                        RainChance = (int)responseDict.RootElement.GetProperty("hourly").GetProperty("rain").EnumerateArray().ElementAt(indexOfHour).GetDouble(),
+                        UvIndex = responseDict.RootElement.GetProperty("daily").GetProperty("uv_index_max").EnumerateArray().First().GetDouble(),
                     };
                 }
                 catch (HttpRequestException ex)

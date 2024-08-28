@@ -54,7 +54,7 @@ namespace WeatherForecastingRestAPI.Tests
             geocodingService.Setup(x => x.GetCityAsync(cityName))
                 .ReturnsAsync(city);
 
-            weatherService.Setup(x => x.GetWeatherByCoordsAsync(city, date, EnumDegreeTypes.Celsius, EnumTimezones.Europe_Berlin))
+            weatherService.Setup(x => x.GetWeatherByCoordsAsync(city, date, EnumTemperatureTypes.Celsius, EnumTimezones.Europe_Berlin))
                 .ReturnsAsync(weatherResponse);
 
             //Act
@@ -87,7 +87,7 @@ namespace WeatherForecastingRestAPI.Tests
             };
             DateTime date = DateTime.Now;
 
-            weatherService.Setup(x => x.GetWeatherByCoordsAsync(city, date, EnumDegreeTypes.Celsius, EnumTimezones.Europe_Berlin))
+            weatherService.Setup(x => x.GetWeatherByCoordsAsync(city, date, EnumTemperatureTypes.Celsius, EnumTimezones.Europe_Berlin))
                 .ReturnsAsync(weatherResponse);
 
             //Act

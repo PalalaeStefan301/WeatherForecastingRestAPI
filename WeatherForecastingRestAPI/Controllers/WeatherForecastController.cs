@@ -26,21 +26,24 @@ namespace WeatherForecastingRestAPI.Controllers
             this.weatherService = weatherService;
         }
 
-        [HttpGet("{cityName}/{date?}/{degree?}/{timezone?}")]
+        [HttpGet("{cityName}")]
+        [HttpGet("{cityName}/{date}")]
+        [HttpGet("{cityName}/{date}/{temperature}")]
+        [HttpGet("{cityName}/{date}/{temperature}/{timezone}")]
         [ProducesResponseType(typeof(WeatherResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetWeather(
             [SwaggerParameter(Description = "The name of the city. E.g. Rotterdam", Required = true)] string cityName,
             [SwaggerParameter(Description = "Exact day of the weather's data. E.g. 2024-08-26T12:00")] DateTime? date = null,
-            [SwaggerParameter(Description = "Celsium or Fahrenheit. Default is Celsius")] EnumDegreeTypes? degree = null,
-            [SwaggerParameter(Description = "Default is Europe_Berlin")] EnumTimezones? timezone = null)
+            [SwaggerParameter(Description = "Celsium or Fahrenheit. Default is Celsius")] EnumTemperatureTypes temperature = EnumTemperatureTypes.Celsius,
+            [SwaggerParameter(Description = "Default is Europe_Berlin")] EnumTimezones timezone = EnumTimezones.Europe_Berlin)
         {
             City? city = await geocodingService.GetCityAsync(cityName);
 
             if (city == null) return NotFound();
 
-            WeatherResponse? response = await weatherService.GetWeatherByCoordsAsync(city!, date??DateTime.Now, degree?? EnumDegreeTypes.Celsius, timezone??EnumTimezones.Europe_Berlin);
+            WeatherResponse? response = await weatherService.GetWeatherByCoordsAsync(city!, date??DateTime.Now, temperature, timezone);
 
             if (response == null) return BadRequest();
 

@@ -11,6 +11,6 @@ namespace BLL.Abstract
 {
     public interface IWeatherService
     {
-        Task<WeatherResponse?> GetWeatherByCoordsAsync(City city, DateTime date, EnumDegreeTypes degreeTypes, EnumTimezones enumTimezones);
+        Task<WeatherResponse?> GetWeatherByCoordsAsync(City city, DateTime date, EnumTemperatureTypes degreeTypes, EnumTimezones enumTimezones);
     }
 }
