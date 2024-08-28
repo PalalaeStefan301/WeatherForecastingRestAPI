@@ -38,4 +38,5 @@ degreeType (optional): The temperature scale (Celsius or Fahrenheit, default is 
 
 - Custom Test Attributes: The use of the BeforeAfterAttribute ensures that mocks are reset before and after each test, maintaining a clean test environment and preventing cross-test contamination.
 
-![alt text]([http://url/to/img.png](https://github.com/PalalaeStefan301/WeatherForecastingRestAPI/blob/master/Swagger.png))
+
+![Swagger](https://github.com/user-attachments/assets/726e3f94-9ee6-4586-975e-b50d4185d588)
