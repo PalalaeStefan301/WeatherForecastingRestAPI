@@ -38,5 +38,9 @@ degreeType (optional): The temperature scale (Celsius or Fahrenheit, default is 
 
 - Custom Test Attributes: The use of the BeforeAfterAttribute ensures that mocks are reset before and after each test, maintaining a clean test environment and preventing cross-test contamination.
 
+# Additional features that I did'nt had time to add on:
+- GraphQL, I've seen how many fields can be added from this [API](https://open-meteo.com/en/docs#) and would be a good idea to let the client let to choose which one and how many. I know this would not be consider a Rest API anymore.
+- JWT, to create a layer of security, limiting how many calls can be done be using a Bearer Token.
+- Add more tests, testing even the services specifically
 
 ![Swagger](https://github.com/user-attachments/assets/726e3f94-9ee6-4586-975e-b50d4185d588)
